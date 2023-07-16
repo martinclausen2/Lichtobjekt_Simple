@@ -13,14 +13,9 @@
 #include "stm32l1xx_hal.h"
 #include "main.h"
 
+#define extbrightness_ADC_RANK 0
+
 #define maxADCvalue 0xFFF
-
-#define ADCchannels 3
-#define ADCextBrightCh 0
-#define ADCuBatCh 1
-#define ADCuPwrCh 2
-
-#define ADC_cnt_reload 10			// defines how often the ADC is triggered per call to measurement function
 
 #define minphotoamp		 100
 #define maxphotoamp		3000
@@ -43,13 +38,8 @@ typedef union {
 
 extern unsigned long extBrightness;
 
-extern unsigned int uBat;
-extern unsigned int uPwr;
-
 void Init_ExtBrightness(ADC_HandleTypeDef *handle_adc);
 void Sample_ExtBrightness();
-void Sample_ExtBrightness_now();
-void AdjustGain(PhotoGain_t PhotoGain);
 void AddValue_ExtBrightness(ADC_HandleTypeDef* handle_adc);
 
 #endif /* EXTBRIGHTNESS_H_ */

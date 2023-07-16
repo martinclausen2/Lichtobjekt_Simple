@@ -40,7 +40,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc;
-DMA_HandleTypeDef hdma_adc;
 
 CRC_HandleTypeDef hcrc;
 
@@ -51,10 +50,6 @@ TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim10;
 TIM_HandleTypeDef htim11;
 
-UART_HandleTypeDef huart1;
-DMA_HandleTypeDef hdma_usart1_rx;
-DMA_HandleTypeDef hdma_usart1_tx;
-
 /* USER CODE BEGIN PV */
 bool volatile TimerFlag;
 /* USER CODE END PV */
@@ -62,13 +57,11 @@ bool volatile TimerFlag;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_DMA_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM10_Init(void);
 static void MX_ADC_Init(void);
-static void MX_USART1_UART_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_TIM11_Init(void);
 static void MX_CRC_Init(void);
@@ -108,13 +101,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM10_Init();
   MX_ADC_Init();
-  MX_USART1_UART_Init();
   MX_TIM6_Init();
   MX_TIM11_Init();
   MX_CRC_Init();
@@ -136,8 +127,6 @@ int main(void)
 	//load RAM values from EEPROM
 	SettingsInit(&hcrc);
 
-	Init_Terminal(&huart1);
-	SettingsCommands_Init();
 	PWM_Init(&htim2);
 	Status_LED_Init(&htim3);
 	Encoder_Init(&htim4);
@@ -165,7 +154,6 @@ int main(void)
 			Sample_ExtBrightness();
 			LEDOptions();
 		}
-		Execute_Terminal();
 		HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
     /* USER CODE END WHILE */
 
@@ -589,61 +577,6 @@ static void MX_TIM11_Init(void)
 }
 
 /**
-  * @brief USART1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART1_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART1_Init 0 */
-
-  /* USER CODE END USART1_Init 0 */
-
-  /* USER CODE BEGIN USART1_Init 1 */
-
-  /* USER CODE END USART1_Init 1 */
-  huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
-  huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_1;
-  huart1.Init.Parity = UART_PARITY_NONE;
-  huart1.Init.Mode = UART_MODE_TX_RX;
-  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART1_Init 2 */
-
-  /* USER CODE END USART1_Init 2 */
-
-}
-
-/**
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void)
-{
-
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* DMA1_Channel1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
-  /* DMA1_Channel4_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
-  /* DMA1_Channel5_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
-
-}
-
-/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -659,10 +592,13 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, PERIP_PWR_Pin|BRIGHT_HIGH_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(PERIP_PWR_GPIO_Port, PERIP_PWR_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(BRIGHT_LOW_GPIO_Port, BRIGHT_LOW_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(BRIGHT_HIGH_GPIO_Port, BRIGHT_HIGH_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : IR_IN_Pin */
   GPIO_InitStruct.Pin = IR_IN_Pin;

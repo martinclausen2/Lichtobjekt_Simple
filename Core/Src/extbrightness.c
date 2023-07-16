@@ -70,7 +70,7 @@ void AdjustGain(PhotoGain_t PhotoGain) {
 void AddValue_ExtBrightness(ADC_HandleTypeDef *handle_adc)
 {
 	// check if value was created by sampling the brightness ADC input channel
-	if (handle_adc->Instance == hadc_extbrightness->Instance)
+	if (handle_adc->Instance == hadc_extbrightness->Instance && handle_adc->NbrOfConversionRank == extbrightness_ADC_RANK)
 	{
 		int ADC_Result = maxADCvalue - HAL_ADC_GetValue(hadc_extbrightness);
 		extBrightness -= (extBrightness >> 6) & 0x0FFFFFFF;		//in the meantime: remove a 1/64 so we have a moving average over 64 data points

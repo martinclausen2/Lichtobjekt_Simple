@@ -132,10 +132,6 @@ void DecodeRemote()
 
 	if (12==rCounter)
 	{
-		char serial_Buffer[64];
-		sprintf(serial_Buffer,"RC5 Addr %d Cmd %d\r\n", rAddress, rCommand);
-		log_serial(serial_Buffer);
-
 		if (GLOBAL_settings_ptr->RC5Addr==rAddress)
 		{
 			if (RTbit ^ RTbitold)		//Neue Taste erkannt

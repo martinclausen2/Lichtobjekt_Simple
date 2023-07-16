@@ -36,14 +36,11 @@ extern "C" {
 #include <ctype.h>
 #include <string.h>
 #include "settings.h"
-#include "terminal_helper.h"
-#include "serialLogger.h"
 #include "mainmenu.h"
 #include "encoder.h"
 #include "keys.h"
 #include "RC5.h"
 #include "extbrightness.h"
-#include "settingscommands.h"
 
 /* USER CODE END Includes */
 
@@ -91,10 +88,6 @@ void SystemClock_Config(void);
 #define IR_OUT_GPIO_Port GPIOB
 #define BRIGHT_IN_Pin GPIO_PIN_14
 #define BRIGHT_IN_GPIO_Port GPIOB
-#define J_LinkRX_Pin GPIO_PIN_9
-#define J_LinkRX_GPIO_Port GPIOA
-#define J_LinkTX_Pin GPIO_PIN_10
-#define J_LinkTX_GPIO_Port GPIOA
 #define SWDIO_Pin GPIO_PIN_13
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14

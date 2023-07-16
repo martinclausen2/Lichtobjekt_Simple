@@ -19,7 +19,6 @@ void CheckAlarm()
 	if (AlarmTrigger)
 	{
 		AlarmTrigger = false;
-		CLI_Printf("\r\nAlarm!");
 
 		//execute a new alarm, but only if none is already running
 		if (!AlarmFlag)
