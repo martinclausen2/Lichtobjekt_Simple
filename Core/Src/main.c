@@ -126,7 +126,6 @@ int main(void)
 
 	//load RAM values from EEPROM
 	SettingsInit(&hcrc);
-
 	PWM_Init(&htim2);
 	Status_LED_Init(&htim3);
 	Encoder_Init(&htim4);
@@ -332,6 +331,10 @@ static void MX_TIM2_Init(void)
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     Error_Handler();
   }

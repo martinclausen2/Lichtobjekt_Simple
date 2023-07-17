@@ -114,15 +114,10 @@ void SetBrightnessRemote(unsigned char i)
 
 void SetBrightnessLevelRemote()
 {
-	if (rCommand<=5)
+	if (rCommand<=10)
 	{
-		Brightness[0]=(((unsigned int)(rCommand)*(unsigned int)GLOBAL_settings_ptr->maxBrightness[0])/(5)) & 0xFF;
+		Brightness[0]=(((unsigned int)(rCommand)*(unsigned int)GLOBAL_settings_ptr->maxBrightness[0])/(10)) & 0xFF;
 		SetLightRemote(0,0);
-	}
-	else if (rCommand<=10)
-	{
-		Brightness[1]=(((unsigned int)(rCommand-5)*(unsigned int)GLOBAL_settings_ptr->maxBrightness[1])/(5)) & 0xFF;
-		SetLightRemote(1,0);
 	}
 }
 
@@ -157,12 +152,6 @@ void DecodeRemote()
 				break;
 			case 17:				//decr vol
 				SetLightRemote(0, -RemoteSteps);
-				break;
-			case 32:				//incr channel
-				SetLightRemote(1, RemoteSteps);
-				break;
-			case 33:				//decr channel
-				SetLightRemote(1, -RemoteSteps);
 				break;
 			}
 			RTbitold=RTbit;				//Togglebit speichern
@@ -251,23 +240,6 @@ void SendCommand(unsigned char address, unsigned char code, unsigned char toggle
 
 	//disable RC5 decoder for the moment
 	HAL_TIM_Base_Stop_IT(htim_decode);
-
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-	/** Initializes the CPU, AHB and APB buses clocks
-	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-			|RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
-	{
-		Error_Handler();
-	}
-
 	HAL_TIM_PWM_Start_IT(htim_encode, TIM_CHANNEL_1);
 
 	SendBit1();	//1st Startbit=1
@@ -316,15 +288,6 @@ void SendCommand(unsigned char address, unsigned char code, unsigned char toggle
 	//switch off IR-LED anyway, just to be sure
 	SetOutputInactive();
 	HAL_TIM_PWM_Stop_IT(htim_encode, TIM_CHANNEL_1);
-	/** Initializes the CPU, AHB and APB buses clocks
-	 */
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
-
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-	{
-		Error_Handler();
-	}
-
 	HAL_TIM_Base_Start_IT(htim_decode);
 }
 

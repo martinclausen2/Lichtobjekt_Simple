@@ -10,7 +10,7 @@
 TIM_HandleTypeDef *htim_PWM;						//handle to address timer
 
 bool LightOn;
-int FocusChannel;
+int FocusChannel = 0;
 unsigned char Brightness[maxChannel];				//current value
 
 unsigned int PWM_Offset[maxChannel] = {0};	 		//PWM value, where the driver effectively starts to generate an output
@@ -67,28 +67,15 @@ void PWM_StepDim()		// perform next dimming step, must frequently called for dim
 		else
 		{
 			htim_PWM->Instance->CCR1 = PWM_SetPulseWidth(0);
+			htim_PWM->Instance->CCR2 = PWM_SetPulseWidth(0);
 			PWM_step_cnt[0] = PWM_step_cnt_reload[0];
-		}
-	}
-
-	if (PWM_incr_cnt[1])
-	{
-		if (PWM_step_cnt[1])
-		{
-			PWM_step_cnt[1]--;
-		}
-		else
-		{
-			htim_PWM->Instance->CCR2 = PWM_SetPulseWidth(1);
-
-			PWM_step_cnt[1] = PWM_step_cnt_reload[1];
 		}
 	}
 }
 
 unsigned int PWM_StepDimSteps()		// return total number of dim steps remaining
 {
-	return PWM_incr_cnt[0] + PWM_incr_cnt[1];
+	return PWM_incr_cnt[0];
 }
 
 

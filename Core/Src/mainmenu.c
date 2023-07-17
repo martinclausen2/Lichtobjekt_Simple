@@ -54,9 +54,9 @@ void MainMenu()
 		break;
 	case 1:
 		CheckAlarm();
-		LEDLimit();
 		if (LightOn)
 		{
+			LEDLimit();
 			StoreBrightness();	// store brightness if required
 		}
 		else

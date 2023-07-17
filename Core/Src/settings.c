@@ -90,7 +90,7 @@ void SettingsReset2Defaults(void){
 	GLOBAL_settings_ptr->ExtBrightness_last = 0;		//external brightness during lights off divided by 256
 	GLOBAL_settings_ptr->Brightness_start[0] = 0;		//value before lights off
 	GLOBAL_settings_ptr->minBrightness[0] = 1;			//minimum brightness after power on and recalculation using measured brightness
-	GLOBAL_settings_ptr->maxBrightness[0] = 40;			//maximum brightness
+	GLOBAL_settings_ptr->maxBrightness[0] = 56;			//maximum brightness
 	GLOBAL_settings_ptr->AlarmBrightness[0] = 20;		//maximum brightness targeted during alarm
 	GLOBAL_settings_ptr->PWM_Offset[0] = 0;				//PWM value, where the driver effectively starts to generate an output
 	GLOBAL_settings_ptr->LightFading = 16;				//Minutes to fade light in
