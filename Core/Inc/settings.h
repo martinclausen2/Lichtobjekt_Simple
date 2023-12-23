@@ -15,15 +15,10 @@
 #include <assert.h>
 
 #define maxChannel 1				//start counting at 1
-#define maxBrightnessLimit 0xFF
-#define maxBeepVolume 0xFF
+#define maxBrightnessLimit 57
 #define maxRC5Addr 31
 #define maxComMode 3
 #define maxLightFading 30
-#define minLCDContrast 0x05
-#define maxLCDContrast 0x0F
-#define maxAlarm 7
-#define maxWeekday 8
 
 static const char __attribute__((unused)) *ComModetext[10] = {"Off", "Alarm", "Condional", "All"};
 
