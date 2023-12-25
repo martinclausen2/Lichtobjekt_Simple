@@ -68,3 +68,5 @@ Standby can be reached via a long button pressed from power on mode.
 | green flash	| while adjusting brightness | maximum brightness reached |
 | red flash		| while adjusting brightness | minimum brightness reached |
 | green flash	| pressing the button very long | cancel button pressed |
+
+The user can reset to default settings by pressing the button on power on.

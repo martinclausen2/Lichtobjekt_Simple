@@ -126,6 +126,10 @@ int main(void)
 
 	//load RAM values from EEPROM
 	SettingsInit(&hcrc);
+	if (!HAL_GPIO_ReadPin(ENC_SW_GPIO_Port, ENC_SW_Pin))
+	{
+		SettingsReset2Defaults();
+	}
 	PWM_Init(&htim2);
 	Status_LED_Init(&htim3);
 	Encoder_Init(&htim4);
